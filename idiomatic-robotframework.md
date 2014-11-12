@@ -15,18 +15,34 @@ files: /css/theme.moon.css
 
 ![武器库](/img/weapon.jpg "武器库")
 
-[slide style="background-image:url('/img/question.png')"]
+[slide]
 
-## 你知道RobotFramework吗?
+## 你对TA的认识有哪些?
+----
+* 测试数据
+* 业务逻辑
+* 结果验证
+[note]
+### 测试 vs. 验证
+### 讨论: 什么样的场景适合/不适合TA
+* 经常变化的业务(如Web UI)
+* 命令行接口
+* FTP上传下载
+* 应用程序的API
+* 打印
+[/note]
 
 [slide]
 
-## 你用RobotFramework多久了?
+## 你对RobotFramework的认识有哪些?
 ----
-* 刚刚接触 {:&.moveIn}
-* 写过一两个case
-* 用过一段时间
-* 很久了
+* 一个开源的测试自动化框架 {:&.moveIn}
+* 以类自然语言的方式来编写自动化case
+* 基于Python实现
+* 支持Linux, Windows和Mac
+* Keyword Driven
+* 可以使用Python编写Keyword进行扩展
+* 可以使用其他语言编写Keyword/Remote Keyword来进行扩展
 
 [slide]
 
@@ -40,6 +56,10 @@ files: /css/theme.moon.css
 * 写入log和report
 * 判断测试结果
 * 结束进程
+[note]
+* 写入log和report为optional步骤
+* 如果有keyword产生的子进程无法结束, 则pybot无法结束
+[/note]
 
 [slide]
 
@@ -73,72 +93,212 @@ class RobotFramework(Application):
 
 ## 你有用过下面这些feature吗?
 ----
-* \_\_init\_\_.txt {:&.moveIn}
-* Resource File
-* Variable File
-* Listener
-* 全局变量
-* 命令行参数
-* 向pybot进程发送signal
+* 将通用的keyword和variable封装为Resource File {:&.moveIn}
+* 对某些动态的变量或者复杂变量使用Variable File
+* 在suite目录下通过\_\_init\_\_进行全局的suite setup和suite teardown
+* 使用Listener在robot执行的时候做一些通用的工作(如Debug)
+* 使用全局变量来动态控制case的执行环境等(pybot -v VAR:XXX)
+* 使用其他pybot的命令行参数来对case进行过滤, 随机调整suite/case执行顺序等
+* 向pybot进程发送kill -2来停止robot执行, 并生成log
 
 [slide]
 
 ## 从suite开始
 ----
-* suite是什么? {:&.moveIn}
-* 执行顺序?
-* suite的层级关系
+* suite还是test? {:&.moveIn}
+    * 测试的范围是否跨多个feature或者功能点, 尽可能将同一个feature和功能点的测试放在一起 {:&.moveIn}
+    * 是否有类似case存在, 存在则在现有suite中添加
+* suite的结构化与python中module, class和function
 * resource文件, library文件放在哪?
+    * case同级或者上级目录的resources目录中 {:&.moveIn}
+    * 不应该存在对子目录resource或者library文件的调用
+* resource, library文件的结构化
+    * 只允许子目录继承父目录 {:&.moveIn}
+    * 尽量避免同级目录的相互引用
 
 [slide]
 
-## 使用__init__文件
+### suite的默认执行顺序
+----
+* ![suite执行顺序](/img/suite.png "suite执行顺序")
+* 相关代码
+```python
+# robot.parsing.populators.FromDirectoryPopulator
+def _list_dir(self, path):
+    # os.listdir returns Unicode entries when path is Unicode
+    names = os.listdir(unic(path))
+    for name in sorted(names, key=unicode.lower):
+        # unic needed to handle nfc/nfd normalization on OSX
+        yield unic(name), unic(os.path.join(path, name))
+```
+
+[slide]
+
+### suite的随机执行顺序
+----
+* "--randomize"参数可以将suite/case的执行顺序进行随机调整
+```python
+class Randomizer(SuiteVisitor):
+
+    def __init__(self, randomize_suites=True, randomize_tests=True, seed=None):
+        # ......
+        args = (seed,) if seed is not None else ()
+        self._shuffle = Random(*args).shuffle
+
+    def start_suite(self, suite):
+        # ......
+        if self.randomize_suites:
+            self._shuffle(suite.suites)
+        if self.randomize_tests:
+            self._shuffle(suite.tests)
+        # ......
+```
+[note]
+效果类似于:
+```
+In [1]: from random import Random
+In [2]: x = Random().shuffle
+In [3]: l = range(4)
+In [4]: l
+Out[4]: [0, 1, 2, 3]
+In [5]: x(l)
+In [6]: l
+Out[6]: [3, 0, 1, 2]
+```
+[/note]
+
+[slide]
+
+## 使用\_\_init\_\_文件
+----
+* Suite Setup和Suite Teardown {:&.moveIn}
+* 目录级别的Tags
 
 [slide]
 
 ## 让测试分组
+----
+* Q: 有如下Web应用的TA场景, 怎么组织suite和case? {:&.moveIn}
+    * 用户以root/password登陆, 可以跳转到success.html {:&.moveIn}
+    * 用户以root/invalid登陆, 可以跳转到invalid.html
+    * 用户都可以通过link "/download"下载数据
+    * 用户登陆成功后, 可以通过link "/upload"上传数据
+    * 用户可以通过ftp协议的"/download" link下载数据
+    * 用户可以通过rsync协议的"/download" link下载数据
+    * 用户可以向其他已登陆用户发送消息
+* 以Feature而不是人/组织来组织suite
+* 通过Tags来区分人和组织
+[note]
+![Web TA](/img/webta.png "Web TA")
+[/note]
 
 [slide]
 
 ## suite组织上的常见问题
+----
+* 没有\_\_init\_\_文件 {:&.moveIn}
+* 一个txt|html文件仅包含一个case
+* 一个txt|html文件包含超过10个case
+* setup和teardown的步骤都在case中
+* 根据team或者部门来组织suite目录结构
 
 [slide]
 
 ## 使用Variable File让变量更聪明
 ----
 * Variable File的优势 {:&.moveIn}
-* 让变量随环境改变
+    * 获取动态数据 {:&.moveIn}
+    * 获取复杂的数据结构
+    * 利用Python进行逻辑判断
+* 代码示例
+```python
+def get_variables(host):
+    try:
+        # ......
+        return {"PACKAGE_VERSION_LONG" : long,
+                "PACKAGE_VERSION" : short,
+                "SYSTEM_PLATFORM" : system,
+                "TEST_ENV" : test_env}
+    except :
+        return {"PACKAGE_VERSION_LONG" : "NA",
+                "PACKAGE_VERSION" : "NA",
+                "SYSTEM_PLATFORM" : "NA",
+                "TEST_ENV" : "NA"}
+    finally:
+        # ......
+```
 
 [slide]
 
 ## 使用listener扩展RobotFramework
 ----
 * 什么时候用listener {:&.moveIn}
+    * 测试之外的需求, 如统计, 调试等 {:&.moveIn}
+    * 统一要求的测试需求, 如文件清理, CI环境恢复等
+    * 临时的测试需求
 * 避免滥用listener
+* 一个复杂的示例: http://becrtt01.china.nsn-net.net/platformci/coci-runner/tree/master/src/ipaci/rdb
 
-[slide]
+[slide style="background-image:url('/img/anotherway.jpg')"]
 
 # PART 2: 换一种方式写TA
 
-[slide]
+[slide style="background-image:url('/img/datadriven.jpg')"]
 
 ## 你写过Data Driven的case吗?
 
-[slide]
+[slide style="background-image:url('/img/behaviourdriven.jpg')"]
 
 ## 你写过Behavior Driven的case吗?
 
+[slide style="background-image:url('/img/designpattern.png')"]
+
+# TA也有设计模式
+
 [slide]
 
-## TA也有设计模式
+## 什么时候用Data Driven模式?
+----
+* 测试基于数据和反馈, 如登陆 {:&.moveIn}
+* 测试步骤相同
+* 数据组合较多
 
 [slide]
+
+## 什么时候用Behaviour Driven模式?
+----
+* 测试用例就是文档 {:&.moveIn}
+* 测试用例的设计是以user case来驱动的
+
+[slide style="background-image:url('/img/bullet.jpg')"]
 
 # PART 3: 充实我们的弹药库
 
 [slide]
 
 ## 你写过keyword吗?
+----
+* 一个典型的keyword {:&.moveIn}
+```python
+def create_list(*items):
+    """Returns a list containing given items.
+
+    The returned list can be assigned both to `${scalar}` and `@{list}`
+    variables.
+
+    Examples:
+    | @{list} =   | Create List | a    | b    | c    |
+    | ${scalar} = | Create List | a    | b    | c    |
+    | ${ints} =   | Create List | ${1} | ${2} | ${3} |
+    """
+    return list(items)
+```
+[note]
+* 名字
+* 参数
+* 返回值
+* 文档
+[/note]
 
 [slide]
 

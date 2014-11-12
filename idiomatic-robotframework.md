@@ -19,7 +19,7 @@ files: /css/theme.moon.css
 
 ## 你对TA的认识有哪些?
 ----
-* 测试数据
+* 测试数据 {:&.moveIn}
 * 业务逻辑
 * 结果验证
 [note]
@@ -49,6 +49,7 @@ files: /css/theme.moon.css
 ## 你知道执行pybot后RobotFramework都做了些什么吗?
 ----
 * 实例化robot.run.RobotFramework {:&.moveIn}
+* 命令行参数解析
 * 实例化RobotSettings
 * 设置LOGGER
 * 生成TestSuite

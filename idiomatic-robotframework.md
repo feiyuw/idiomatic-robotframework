@@ -30,6 +30,47 @@ files: /css/theme.moon.css
 
 [slide]
 
+## 你知道执行pybot后RobotFramework都做了些什么吗?
+----
+* 实例化robot.run.RobotFramework {:&.moveIn}
+* 实例化RobotSettings
+* 设置LOGGER
+* 生成TestSuite
+* 执行TestSuite
+* 写入log和report
+* 判断测试结果
+* 结束进程
+
+[slide]
+
+### 相关代码robot.run.RobotFramework
+----
+```python
+class RobotFramework(Application):
+
+    def __init__(self):
+        Application.__init__(self, USAGE, arg_limits=(1,),
+                             env_options='ROBOT_OPTIONS', logger=LOGGER)
+
+    def main(self, datasources, **options):
+        settings = RobotSettings(options)
+        LOGGER.register_console_logger(**settings.console_logger_config)
+        LOGGER.info('Settings:\n%s' % unicode(settings))
+        suite = TestSuiteBuilder(settings['SuiteNames'],
+                                 settings['WarnOnSkipped'],
+                                 settings['RunEmptySuite']).build(*datasources)
+        suite.configure(**settings.suite_config)
+        result = suite.run(settings)
+        LOGGER.info("Tests execution ended. Statistics:\n%s"
+                    % result.suite.stat_message)
+        if settings.log or settings.report or settings.xunit:
+            writer = ResultWriter(settings.output if settings.log else result)
+            writer.write_results(settings.get_rebot_settings())
+        return result.return_code
+```
+
+[slide]
+
 ## 你有用过下面这些feature吗?
 ----
 * \_\_init\_\_.txt {:&.moveIn}
@@ -38,13 +79,16 @@ files: /css/theme.moon.css
 * Listener
 * 全局变量
 * 命令行参数
+* 向pybot进程发送signal
 
 [slide]
 
-## suite不都是一个html文件
+## 从suite开始
 ----
-* suite的层级关系 {:&.moveIn}
-* suite和resource, library文件的层级关系
+* suite是什么? {:&.moveIn}
+* 执行顺序?
+* suite的层级关系
+* resource文件, library文件放在哪?
 
 [slide]
 

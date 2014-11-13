@@ -268,7 +268,7 @@ def get_variables(host):
 
 ## Keyword Driven模式
 ----
-* 每一个业务点相对固定
+* 每一个业务点相对固定 {:&.moveIn}
 * 业务点之间可以互相组合
 * 验证点随组合不同而不同
 * [示例](/examples/kw-driven.txt)

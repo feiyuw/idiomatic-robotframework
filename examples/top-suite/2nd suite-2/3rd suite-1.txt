@@ -1,0 +1,3 @@
+*** Test Case ***
+3rd suite 1
+    Log     3rd suite-1

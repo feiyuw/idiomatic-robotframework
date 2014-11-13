@@ -1,6 +1,6 @@
 title: Idiomatic RobotFramework
 speaker: Zhang Yu
-url: https://github.com/feiyuw/idiomatic-rf
+url: https://github.com/feiyuw/idiomatic-robotframework
 transition: cards
 files: /css/theme.moon.css
 
@@ -109,13 +109,13 @@ class RobotFramework(Application):
 * suite还是test? {:&.moveIn}
     * 测试的范围是否跨多个feature或者功能点, 尽可能将同一个feature和功能点的测试放在一起 {:&.moveIn}
     * 是否有类似case存在, 存在则在现有suite中添加
-* suite的结构化与python中module, class和function
+* suite的结构化 vs. python中module, class和function
 * resource文件, library文件放在哪?
     * case同级或者上级目录的resources目录中 {:&.moveIn}
     * 不应该存在对子目录resource或者library文件的调用
 * resource, library文件的结构化
     * 只允许子目录继承父目录 {:&.moveIn}
-    * 尽量避免同级目录的相互引用
+    * 尽量避免同目录内的交叉引用
 
 [slide]
 
@@ -172,8 +172,12 @@ Out[6]: [3, 0, 1, 2]
 
 ## 使用\_\_init\_\_文件
 ----
-* Suite Setup和Suite Teardown {:&.moveIn}
+* Documentation {:&.moveIn}
+* Meta Data
+* Force Tags
+* Suite Setup和Suite Teardown
 * 目录级别的Tags
+* 所有case的默认Test Setup, Test Teardown和Test Timeout
 
 [slide]
 
@@ -191,6 +195,10 @@ Out[6]: [3, 0, 1, 2]
 * 通过Tags来区分人和组织
 [note]
 ![Web TA](/img/webta.png "Web TA")
+### 课后思考
+* 哪些场景适合用Keyword Driven?
+* 哪些场景适合用Data Driven?
+* 哪些场景适合用Behaviour Driven?
 [/note]
 
 [slide]
@@ -238,7 +246,7 @@ def get_variables(host):
     * 统一要求的测试需求, 如文件清理, CI环境恢复等
     * 临时的测试需求
 * 避免滥用listener
-* 一个复杂的示例: http://becrtt01.china.nsn-net.net/platformci/coci-runner/tree/master/src/ipaci/rdb
+* [一个复杂的示例](http://becrtt01.china.nsn-net.net/platformci/coci-runner/tree/master/src/ipaci/rdb)
 
 [slide style="background-image:url('/img/anotherway.jpg')"]
 
@@ -258,11 +266,25 @@ def get_variables(host):
 
 [slide]
 
+## Keyword Driven模式
+----
+* 每一个业务点相对固定
+* 业务点之间可以互相组合
+* 验证点随组合不同而不同
+* [示例](/examples/kw-driven.txt)
+
+[slide]
+
 ## 什么时候用Data Driven模式?
 ----
 * 测试基于数据和反馈, 如登陆 {:&.moveIn}
 * 测试步骤相同
 * 数据组合较多
+* [示例1](/examples/data-driven.txt)
+* [示例2](/examples/data-driven-arguments.txt)
+[note]
+* 所有的示例基于robotframework 2.8.6版本
+[/note]
 
 [slide]
 
@@ -270,6 +292,7 @@ def get_variables(host):
 ----
 * 测试用例就是文档 {:&.moveIn}
 * 测试用例的设计是以user case来驱动的
+* [示例](/examples/bdd.txt)
 
 [slide style="background-image:url('/img/bullet.jpg')"]
 
@@ -310,6 +333,17 @@ def create_list(*items):
 * 有被依赖吗?
 * 支持Linux吗?
 * 支持Windows吗?
+
+## keyword设计的一些准则
+----
+* 一个keyword是一个原子操作 {:&.moveIn}
+* keyword的参数应该是一个简单数据类型, 多数情况下应该是String
+* 不同级别的keyword需要分离
+* 抛出错误, 而不是捕获它
+* 调用其他的keyword, 应该只需要知道它的名字
+* 一个keyword的重构(如移动, 添加optional的参数), 不应该影响其他keyword和case
+* 单元测试是必须的, 鼓励TDD
+* keyword的设计也需要遵循其他Python编码的规范
 
 [slide]
 

@@ -334,6 +334,8 @@ def create_list(*items):
 * 支持Linux吗?
 * 支持Windows吗?
 
+[slide]
+
 ## keyword设计的一些准则
 ----
 * 一个keyword是一个原子操作 {:&.moveIn}
@@ -355,13 +357,11 @@ def create_list(*items):
 * 持续发布
 * 协同开发
 
-[slide]
+[slide style="background-image:url('/img/nextstep.jpg')"]
 
-# 迈出下一步
-----
-* Case/keyword的Review {:&.moveIn}
-* Refactoring
-* Open Source
+* ## Case/keyword的Review {:&.moveIn}
+* ## Refactoring
+* ## Open Source
 
 [slide]
 

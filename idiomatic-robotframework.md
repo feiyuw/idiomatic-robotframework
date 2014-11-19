@@ -271,7 +271,7 @@ def get_variables(host):
 * 每一个业务点相对固定 {:&.moveIn}
 * 业务点之间可以互相组合
 * 验证点随组合不同而不同
-* [示例](/examples/kw-driven.txt)
+* [示例](/examples/kw-driven.robot)
 
 [slide]
 
@@ -280,8 +280,8 @@ def get_variables(host):
 * 测试基于数据和反馈, 如登陆 {:&.moveIn}
 * 测试步骤相同
 * 数据组合较多
-* [示例1](/examples/data-driven.txt)
-* [示例2](/examples/data-driven-arguments.txt)
+* [示例1](/examples/data-driven.robot)
+* [示例2](/examples/data-driven-arguments.robot)
 [note]
 * 所有的示例基于robotframework 2.8.6版本
 [/note]
@@ -292,7 +292,7 @@ def get_variables(host):
 ----
 * 测试用例就是文档 {:&.moveIn}
 * 测试用例的设计是以user case来驱动的
-* [示例](/examples/bdd.txt)
+* [示例](/examples/bdd.robot)
 
 [slide style="background-image:url('/img/bullet.jpg')"]
 

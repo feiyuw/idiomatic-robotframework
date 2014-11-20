@@ -36,10 +36,10 @@ files: /js/demo.js,/css/demo.css,/css/theme.moon.css
 
 ## 今天的RobotFramework
 
-* 月均**60000**下载 {:&.moveIn}
-* 超过**2000**用户在robotframework-users邮件列表中
+* 月均*60000*下载 {:&.moveIn}
+* 超过*2000*用户在robotframework-users邮件列表中
 * 包括中国在内的多个国家的许多公司正在采用这个框架
-* 在Nokia Networks, 有不同产品线的超过**1000**名工程师在使用RobotFramework
+* 在Nokia Networks, 有不同产品线的超过*1000*名工程师在使用RobotFramework
 
 [note]
 The framework is based on studies and prototypes that I did for my
@@ -72,21 +72,10 @@ http://eliga.fi/writings.html
 
 ## 支持的library
 
-----
-* Standard Library
-    * BuiltIn
-    * OperatingSystem
-    * String
-    * Remote
-    * Collections
-    * Telnet
-    * ...
-* External Library
-    * Selenium2
-    * SSH
-    * Android
-    * iOS
-    * ...
+  来源  | 支持的Library
+:--------|:-------------
+Standard | *BuiltIn* *OperatingSystem* *String* *Dialogs* *Remote* *Telnet* *Collections* *Screenshot* *XML* *Process* *DateTime*
+External | *Android* *Selenium2* *SSH* *AutoIt* *watir* *iOS* ...
 
 [slide]
 

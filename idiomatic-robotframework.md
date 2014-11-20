@@ -11,9 +11,8 @@ files: /css/theme.moon.css
 
 [slide]
 
-# PART 1  挑选合适的武器
-
-![武器库](/img/weapon.jpg "武器库")
+# PART 1  重新认识RobotFramework {:&.moveIn}
+## 起初神创造天地。地是空虚混沌。渊面黑暗。神的灵运行在水面上。神说，要有光，就有了光。神看光是好的，就把光暗分开了。神称光为昼，称暗为夜。有晚上，有早晨，这是头一日。
 
 [slide]
 
@@ -22,6 +21,7 @@ files: /css/theme.moon.css
 * 测试数据 {:&.moveIn}
 * 业务逻辑
 * 结果验证
+* TA也是软件开发的一种
 [note]
 ### 测试 vs. 验证
 ### 讨论: 什么样的场景适合/不适合TA
@@ -346,6 +346,48 @@ def create_list(*items):
 * 一个keyword的重构(如移动, 添加optional的参数), 不应该影响其他keyword和case
 * 单元测试是必须的, 鼓励TDD
 * keyword的设计也需要遵循其他Python编码的规范
+
+[slide]
+
+## keyword编写中的一些常见问题
+----
+* 为了适应不同的场景, 添加很多的可选参数, [示例](/examples/unit_state.py) {:&.moveIn}
+* 同一个参数支持多种数据类型, 导致冗长的参数判断逻辑, [示例](/examples/tm500.py)
+* 复杂的参数类型, 通常情况下参数应该是字符串
+* 以C/Java的风格写Python
+* 其它与clean code相违背的问题
+    * boolean参数 {:&.moveIn}
+    * defensive programming, 典型情形: 对参数进行类型检查
+    * setter函数有返回值
+    * getter函数中有对业务的修改操作
+
+[note]
+```python
+# 重构前
+Key_List = []
+Value_List = []
+for target in Need_to_Modify:
+     if len(target)==0:
+        para_len=para_len+1
+        continue
+     tmp = target.split(':')
+     Key_List.append(tmp[0].upper())
+     Value_List.append(tmp[1].upper())
+# 重构后
+para_dict = dict(map(lambda x: x.upper().split(':', 1), Need_to_Modify))
+```
+练习: 对第二个例子进行重构
+[/note]
+
+[slide]
+
+## 不可或缺地单元测试
+----
+* 什么时候写单元测试? {:&.moveIn}
+* 验证什么?
+* 你的单元测试安全吗?
+* 单元测试的效率
+* [示例函数](/examples/utils.py), [示例UT](/examples/test_utils.py)
 
 [slide]
 

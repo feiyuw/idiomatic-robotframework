@@ -72,6 +72,22 @@ http://eliga.fi/writings.html
 
 ## 支持的library
 
+----
+* Standard Library
+    * BuiltIn
+    * OperatingSystem
+    * String
+    * Remote
+    * Collections
+    * Telnet
+    * ...
+* External Library
+    * Selenium2
+    * SSH
+    * Android
+    * iOS
+    * ...
+
 [slide]
 
 ## Demo

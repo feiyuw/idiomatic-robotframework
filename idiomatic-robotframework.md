@@ -4,15 +4,16 @@ url: https://github.com/feiyuw/idiomatic-robotframework
 transition: cards
 files: /css/theme.moon.css
 
-[slide style="background-image:url('/img/robotframework.jpg')"]
-
-# Idiomatic RobotFramework {:&.flexbox.vleft}
-## From：Zhang Yu
-
 [slide]
 
-# PART 1  重新认识RobotFramework {:&.moveIn}
-## 起初神创造天地。地是空虚混沌。渊面黑暗。神的灵运行在水面上。神说，要有光，就有了光。神看光是好的，就把光暗分开了。神称光为昼，称暗为夜。有晚上，有早晨，这是头一日。
+# Idiomatic RobotFramework
+## From：Zhang Yu
+
+![RobotFramework](/img/robotframework.png "RobotFramework")
+
+[slide style="background-image:url('/img/zero.jpg')"]
+
+# PART 1  重新认识RobotFramework
 
 [slide]
 
@@ -246,7 +247,8 @@ def get_variables(host):
     * 统一要求的测试需求, 如文件清理, CI环境恢复等
     * 临时的测试需求
 * 避免滥用listener
-* [一个复杂的示例](http://becrtt01.china.nsn-net.net/platformci/coci-runner/tree/master/src/ipaci/rdb)
+* TODO: [示例: 统计keyword执行次数和时间](/examples/listener.py)
+* [一个复杂的示例: rdb](http://becrtt01.china.nsn-net.net/platformci/coci-runner/tree/master/src/ipaci/rdb)
 
 [slide style="background-image:url('/img/anotherway.jpg')"]
 

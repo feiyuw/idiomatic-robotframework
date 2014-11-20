@@ -26,6 +26,12 @@ files: /js/demo.js,/css/demo.css,/css/theme.moon.css
 
 [slide]
 
+## RobotFramework的基本架构
+
+![RobotFramework Architecture](/img/robotframework_arch.png "RobotFramework Architecture")
+
+[slide]
+
 ## RobotFramework的诞生历程
 
 * 2005年, Pekka在准备硕士论文的过程中实现了一个原型 {:&.moveIn}

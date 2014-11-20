@@ -29,7 +29,7 @@ files: /js/demo.js,/css/demo.css,/css/theme.moon.css
 ## RobotFramework的诞生历程
 
 * 2005年, Pekka在准备硕士论文的过程中实现了一个原型 {:&.moveIn}
-* 2005年秋季, 在Nokia Networks, Pekka和其他Robot Dev团队的基于上述原型开始开发RobotFramework, 并于几个月之后付诸使用
+* 2005年秋季, 在Nokia Networks, Pekka和其他Robot Dev团队的成员基于上述原型开始开发RobotFramework, 并于几个月之后付诸使用
 * 2008年6月, RobotFramework 2.0版本发布, 并正式对外开源, RobotFramework进入快速发展阶段
 
 [slide]

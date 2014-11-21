@@ -93,6 +93,75 @@ class RobotFramework(Application):
 
 [slide]
 
+## 你知道RobotFramework是怎么找到指定的keyword的吗?
+
+* 当前case中的user keyword {:&.moveIn}
+* resource文件中定义的user keyword
+* library中定义的keyword
+* 相关代码
+```python
+# robot.running.namespace
+def _get_implicit_handler(self, name):
+    for method in [self._get_handler_from_test_case_file_user_keywords,
+                   self._get_handler_from_resource_file_user_keywords,
+                   self._get_handler_from_library_keywords]:
+        handler = method(name)
+        if handler:
+            return handler
+    return None
+```
+
+[slide]
+
+## 你知道RobotFramework是如何导入Library的?
+
+* 将library名字import为class或者module {:&.moveIn}
+* 根据不同的library类型生成对应的Library class
+* 相关代码
+```python
+# robot.running.testlibraries
+def TestLibrary(name, args=None, variables=None, create_handlers=True):
+    with OutputCapturer(library_import=True):
+        importer = Importer('test library')
+        libcode = importer.import_class_or_module(name)
+    libclass = _get_lib_class(libcode)
+    lib = libclass(libcode, name, args or [], variables)
+    if create_handlers:
+        lib.create_handlers()
+    return lib
+```
+
+[note]
+module library的keyword来源
+```python
+# robot.running.testlibraries
+def _get_handler_names(self, instance):
+    try:
+        return instance.get_keyword_names()
+    except AttributeError:
+        return instance.getKeywordNames()
+
+# robot.running.namespace
+def _get_handler(self, name):
+    handler = None
+    if not name:
+        raise DataError('Keyword name cannot be empty.')
+    if not isinstance(name, basestring):
+        raise DataError('Keyword name must be a string.')
+    if '.' in name:
+        handler = self._get_explicit_handler(name)
+    if not handler:
+        handler = self._get_implicit_handler(name)
+    if not handler:
+        handler = self._get_bdd_style_handler(name)
+    if not handler:
+        handler = self._get_x_times_handler(name)
+    return handler
+```
+[/note]
+
+[slide]
+
 ## 你有用过下面这些feature吗?
 ----
 * 将通用的keyword和variable封装为Resource File {:&.moveIn}
@@ -247,7 +316,7 @@ def get_variables(host):
     * 统一要求的测试需求, 如文件清理, CI环境恢复等
     * 临时的测试需求
 * 避免滥用listener
-* TODO: [示例: 统计keyword执行次数和时间](/examples/listener.py)
+* [示例: 统计keyword执行次数和时间](/examples/listener.py)
 * [一个复杂的示例: rdb](http://becrtt01.china.nsn-net.net/platformci/coci-runner/tree/master/src/ipaci/rdb)
 
 [slide style="background-image:url('/img/anotherway.jpg')"]

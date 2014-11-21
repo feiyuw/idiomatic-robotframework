@@ -246,7 +246,6 @@ Out[6]: [3, 0, 1, 2]
 * Meta Data
 * Force Tags
 * Suite Setup和Suite Teardown
-* 目录级别的Tags
 * 所有case的默认Test Setup, Test Teardown和Test Timeout
 
 [slide]

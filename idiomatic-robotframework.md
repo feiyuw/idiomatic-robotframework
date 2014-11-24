@@ -475,6 +475,59 @@ para_dict = dict(map(lambda x: x.upper().split(':', 1), Need_to_Modify))
 * ## Refactoring
 * ## Open Source
 
+[slide style="background-image:url('/img/speed.jpg')"]
+
+# PART 4: TA的价值体现在生产效率上
+
+[slide]
+
+## TA的开发效率
+----
+* 选择高效的开发工具 {:&.moveIn}
+    * pip {:&.moveIn}
+    * RobotIDE
+    * VIM
+    * iPython
+    * Linux
+* 开发模式
+    * 开发-调试 vs. 小步快跑 {:&.moveIn}
+    * Q: 怎么在python console里面执行keyword?
+    * Q: 怎么调试到RobotFramework的代码里面?
+    * Q: TDD应该怎么开始?
+
+[slide]
+
+## TA的维护效率
+----
+* TA是**软件开发**的一种 {:&.moveIn}
+* 代码的可读性**最为重要**
+* RobotFramework的**模块化**
+* Keyword Library的**模块化**
+* **健壮性**的一些考虑
+    * 及早检查 {:&.moveIn}
+    * 及早失败
+    * 环境问题的自动重试
+    * Linux ==> Windows
+    * 设备的集中式管理
+    * 集中式的执行平台
+
+[slide]
+
+## TA的执行效率
+----
+* 找到执行的**瓶颈** {:&.moveIn}
+* 发现真实的设备**利用率**
+* 提高有效的**执行率**
+* 降低执行**准备成本**
+
+[slide]
+
+## TA的分析效率
+----
+* Q: 分析的时候需要除了robot log之外的东西吗? {:&.moveIn}
+* Q: 有哪些噪声可能影响分析的结果?
+* Q: 怎么避免对同一问题的重复分析?
+
 [slide]
 
 # 下一期预告

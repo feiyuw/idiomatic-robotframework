@@ -259,15 +259,11 @@ Out[6]: [3, 0, 1, 2]
     * 用户登陆成功后, 可以通过link "/upload"上传数据
     * 用户可以通过ftp协议的"/download" link下载数据
     * 用户可以通过rsync协议的"/download" link下载数据
-    * 用户可以向其他已登陆用户发送消息
+    * 用户登陆成功后, 可以向其他已登陆用户发送消息
 * 以Feature而不是人/组织来组织suite
 * 通过Tags来区分人和组织
 [note]
 ![Web TA](/img/webta.png "Web TA")
-### 课后思考
-* 哪些场景适合用Keyword Driven?
-* 哪些场景适合用Data Driven?
-* 哪些场景适合用Behaviour Driven?
 [/note]
 
 [slide]
@@ -363,6 +359,9 @@ def get_variables(host):
 * 测试用例就是文档 {:&.moveIn}
 * 测试用例的设计是以user case来驱动的
 * [示例](/examples/bdd.robot)
+[note]
+One way to write these requirements/tests is Given-When-Then style popularized by Behavior Driven Development (BDD). When writing test cases in this style, the initial state is usually expressed with a keyword starting with word Given, the actions are described with keyword starting with When and the expectations with a keyword starting with Then. Keyword starting with And may be used if a step has more than one action.
+[/note]
 
 [slide style="background-image:url('/img/bullet.jpg')"]
 
@@ -478,6 +477,18 @@ para_dict = dict(map(lambda x: x.upper().split(':', 1), Need_to_Modify))
 [slide style="background-image:url('/img/speed.jpg')"]
 
 # PART 4: TA的价值体现在生产效率上
+[note]
+可以考虑采用分组实践的方式, 比如设计一个应用程序, 当有用户连上后, 就不会响应其他用户的请求. 或者一次只能处理两个用户的请求, 来模拟现实世界中的设备资源限制的问题.
+
+一开始的时候可能是通过人为交流来处理冲突, 接下来我们考虑其他更高效的方法.
+
+另一个可能的实践, 用ATDD的方式实现以下需求, 要求有case, 有代码:
+
+1. 准备好一个简单的服务端应用echo server
+1. 增加需求, 接受到quit的时候, 退出连接
+1. 增加需求, 如接收到date的时候, 显示当前服务器时间
+1. 再增加需求, 如接收到!ls的时候, 在服务器上执行ls命令, 并返回执行结果
+[/note]
 
 [slide]
 

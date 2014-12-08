@@ -15,9 +15,13 @@
 ## Actions
 
 1. workshop分成多次
-    1. dive into robotframework (目前的idiomatic robotframewor的PART 1)
+    1. idiomatic robotframework (目前的idiomatic robotframewor的PART 1的tips部分)
+    1. dive into robotframework (目前的idiomatic robotframewor的PART 1的robot原理部分)
     1. design patterns of robotframework (目前的idiomatic robotframework的PART 2)
     1. write maintainable keyword (目前的idiomatic robotframework的PART 3)
     1. build high efficiency TA solution (目前的idiomatic robotframework的PART 4)
 1. 找一个可以在手机上填写反馈的方案, 通过扫描二维码的方式
 1. 对每一个workshop明确要求的背景技能, 形式如python \*\*\*, RobotFramework \*\*\*\*\*, Linux \*\*等
+1. 在idiomatic robotframework中添加library使用的tips
+1. 在write maintainable keyword中添加Li Huawei推荐的以面向对象的形式组织keyword
+1. 在build high efficiency TA solution中添加trouble shooting的相关slides

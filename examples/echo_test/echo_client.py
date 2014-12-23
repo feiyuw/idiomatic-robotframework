@@ -13,7 +13,7 @@ class EchoClient(object):
         self._buffer = 1024
 
     def connect(self):
-    self._sock.connect((self._host, self._port))
+        self._sock.connect((self._host, self._port))
 
     def disconnect(self):
         self._sock.close()

@@ -1,3 +1,7 @@
 *.swp
 .tags
 *.pyc
+.ipynb_checkpoints/
+log.html
+output.xml
+report.html

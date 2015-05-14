@@ -82,6 +82,4 @@ class _DictObj(object):
         self._attrs = attributes
 
     def __getattr__(self, attr):
-        if attr in self._attrs:
-            return self._attrs[attr]
-        return None
+        return self._attrs.get(attr, None)

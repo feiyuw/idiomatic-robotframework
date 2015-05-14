@@ -2,6 +2,7 @@ import os
 import time
 from robot.output import XmlLogger
 from robot.running import EXECUTION_CONTEXTS
+from robot.reporting.resultwriter import ResultWriter
 
 class RunningInspector:
     ROBOT_LISTENER_API_VERSION = 2
@@ -74,7 +75,8 @@ class SuiteLogger:
             return None
         if hasattr(current, 'suite_logger'):
             return current.suite_logger
-        current.suite_logger = XmlLogger(current.suite.name + '.output.xml')
+        log_path = os.path.join(current.variables['${OUTPUT DIR}'], current.suite.name + '.output.xml')
+        current.suite_logger = XmlLogger(log_path)
         return current.suite_logger
 
 class _DictObj(object):

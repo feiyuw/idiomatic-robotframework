@@ -1,5 +1,7 @@
 import os
 import time
+from robot.output import XmlLogger
+from robot.running import EXECUTION_CONTEXTS
 
 class RunningInspector:
     ROBOT_LISTENER_API_VERSION = 2
@@ -23,3 +25,63 @@ class RunningInspector:
             for kw_name, durations in self._report.iteritems():
                 f.write(kw_name + '\n')
                 f.write('\tcount: %d, duration: %d\n' % (len(durations), sum(durations)))
+
+
+class SuiteLogger:
+    ROBOT_LISTENER_API_VERSION = 2
+
+    def start_suite(self, name, attributes):
+        attributes['name'] = name
+        self._get_logger().start_suite(_DictObj(attributes))
+
+    def end_suite(self, name, attributes):
+        attributes['name'] = name
+        self._get_logger().end_suite(_DictObj(attributes))
+        self._get_logger().close()
+
+    def start_test(self, name, attributes):
+        attributes['name'] = name
+        self._get_logger().start_test(_DictObj(attributes))
+
+    def end_test(self, name, attributes):
+        attributes['name'] = name
+        self._get_logger().end_test(_DictObj(attributes))
+
+    def start_keyword(self, name, attributes):
+        attributes['name'] = name
+        attributes['type'] = 'kw'
+        self._get_logger().start_keyword(_DictObj(attributes))
+
+    def end_keyword(self, name, attributes):
+        attributes['name'] = name
+        attributes['type'] = 'kw'
+        self._get_logger().end_keyword(_DictObj(attributes))
+
+    def log_message(self, message):
+        if self._get_logger():
+            self._get_logger().log_message(_DictObj(message))
+
+    def message(self, message):
+        if self._get_logger():
+            self._get_logger().message(_DictObj(message))
+
+    def set_log_level(self, level):
+        self._get_logger().set_log_level(level)
+
+    def _get_logger(self):
+        current = EXECUTION_CONTEXTS.current
+        if not current:
+            return None
+        if hasattr(current, 'suite_logger'):
+            return current.suite_logger
+        current.suite_logger = XmlLogger(current.suite.name + '.output.xml')
+        return current.suite_logger
+
+class _DictObj(object):
+    def __init__(self, attributes):
+        self._attrs = attributes
+
+    def __getattr__(self, attr):
+        if attr in self._attrs:
+            return self._attrs[attr]
+        return None

@@ -39,8 +39,17 @@ class SuiteLogger:
         attributes['name'] = name
         self._get_logger().end_suite(_DictObj(attributes))
         self._get_logger().close()
+        if self._has_tests():
+            self._generate_log_html()
+
+    def _generate_log_html(self):
+        output_xml_path = self._get_output_xml_path()
+        log_html_path = self._get_log_html_path()
+        writer = ResultWriter(output_xml_path)
+        writer.write_results(report=None, log=log_html_path, xunit=None)
 
     def start_test(self, name, attributes):
+        self.current.has_tests = True
         attributes['name'] = name
         self._get_logger().start_test(_DictObj(attributes))
 
@@ -70,14 +79,25 @@ class SuiteLogger:
         self._get_logger().set_log_level(level)
 
     def _get_logger(self):
-        current = EXECUTION_CONTEXTS.current
-        if not current:
+        if not self.current:
             return None
-        if hasattr(current, 'suite_logger'):
-            return current.suite_logger
-        log_path = os.path.join(current.variables['${OUTPUT DIR}'], current.suite.name + '.output.xml')
-        current.suite_logger = XmlLogger(log_path)
-        return current.suite_logger
+        if hasattr(self.current, 'suite_logger'):
+            return self.current.suite_logger
+        self.current.suite_logger = XmlLogger(self._get_output_xml_path())
+        return self.current.suite_logger
+
+    def _get_output_xml_path(self):
+        return os.path.join(self.current.variables['${OUTPUT DIR}'], self.current.suite.name + '.output.xml')
+
+    def _get_log_html_path(self):
+        return os.path.join(self.current.variables['${OUTPUT DIR}'], self.current.suite.name + '.log.html')
+
+    def _has_tests(self):
+        return hasattr(self.current, 'has_tests') and self.current.has_tests or False
+
+    @property
+    def current(self):
+        return EXECUTION_CONTEXTS.current
 
 class _DictObj(object):
     def __init__(self, attributes):

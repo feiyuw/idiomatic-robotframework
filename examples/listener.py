@@ -104,4 +104,4 @@ class _DictObj(object):
         self._attrs = attributes
 
     def __getattr__(self, attr):
-        return self._attrs.get(attr, None)
+        return self._attrs.get(attr, [])
